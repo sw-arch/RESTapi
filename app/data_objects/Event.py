@@ -2,19 +2,27 @@ from .Ticket import Ticket
 
 
 class Event:
-    def __init__(self, eventName, description, seats, ticketPrice):
-        self.eventName = eventName
+    def __init__(self, name, description, numberOfSeats, ticketPrice):
+        self.eventName = name
         self.description = description
-        self.tickets = list(self.generate_tickets(seats))
+        self.ticketsAvailable = set(self._generate_tickets(numberOfSeats))
+        self.ticketsReserved = dict()
         self.ticketPrice = ticketPrice
-        self.seatsReserved = 0
 
     def reserve_ticket(self):
-        if self.seatsReserved < len(self.tickets):
-            self.seatsReserved += 1
-            return self.tickets[self.seatsReserved - 1]
+        if self.ticketsAvailable:
+            ticket = self.ticketsAvailable.pop()
+            self.ticketsReserved[ticket.ticketNumber] = ticket
+            return ticket
         return None
 
-    def generate_tickets(self, seats):
+    def refund_ticket(self, ticketNumber):
+        if ticketNumber in self.ticketsReserved:
+            ticket = self.ticketsReserved.pop(ticketNumber)
+            self.ticketsAvailable.add(ticket)
+            return True
+        return False
+
+    def _generate_tickets(self, seats):
         for ticketNumber in range(seats):
             yield Ticket(self.ticketPrice, ticketNumber)
