@@ -1,13 +1,13 @@
-from .Ticket import Ticket
+from app.data_objects.Ticket import Ticket
 
 
 class Event:
     def __init__(self, name, description, numberOfSeats, ticketPrice):
         self.eventName = name
         self.description = description
+        self.ticketPrice = ticketPrice
         self.ticketsAvailable = set(self._generate_tickets(numberOfSeats))
         self.ticketsReserved = dict()
-        self.ticketPrice = ticketPrice
 
     def reserve_ticket(self):
         if self.ticketsAvailable:
@@ -26,3 +26,12 @@ class Event:
     def _generate_tickets(self, seats):
         for ticketNumber in range(seats):
             yield Ticket(self.ticketPrice, ticketNumber)
+
+    def to_json(self):
+        return {
+            'event_name': self.eventName,
+            'description': self.description,
+            'ticket_price': self.ticketPrice,
+            'tickets_available': list(self.ticketsAvailable),
+            'tickets_reserved': list(self.ticketsReserved.values()),
+        }
