@@ -4,6 +4,10 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 
+# key: eventName  value: Event()
+events = {}
+
+
 @app.route('/')
 def index():
     return 'Hello, World!'
@@ -11,7 +15,7 @@ def index():
 
 @app.route('/events', method='GET')
 def get_events():
-    pass
+    jsonify(events)
 
 
 @app.route('/events/<name>', method='GET')
