@@ -1,5 +1,5 @@
 #! /bin/python
-from flask import Flask, jsonify, abort, make_response
+from flask import Flask, jsonify, abort
 from app.data_objects.Event import Event
 
 app = Flask(__name__)
@@ -87,4 +87,4 @@ def refund_ticket(eventName, ticketNumber):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run("0.0.0.0", 80)
