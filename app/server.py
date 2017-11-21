@@ -16,6 +16,10 @@ def get_event(name):
         abort(jsonify(status="err",
                       message="No event by this name"))
 
+@app.route('/', methods=['GET'])
+def home():
+    return ('<h1>Hello World</h1>')
+
 
 @app.route('/events', methods=['GET'])
 def get_events():
